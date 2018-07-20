@@ -12,12 +12,12 @@ metadata:
     app.kubernetes.io/name: "{{ .Release.Name }}"
 spec:
   descriptor:
-    type: AquaSecurity
-    version: '0.1.2'
+    type: Aqua Container Security Platform
+    version: '0.1.4'
     description: |-
       Aqua's Container Security Platform provides full visibility into container activity, allowing organizations to detect and prevent suspicious activity and attacks, providing transparent, automated security while helping to enforce policy and simplify regulatory compliance.
       ## Support
-      [Email Aqua Support](mailto:support@aquasec.com?bcc=cloud.sales@aquasec.com&Subject=GKE%20Marketplace%20Support%20Question%20Customer%20ID&Body=Dear%20Aqua%20support,)
+      [Email Aqua Support](mailto:support@aquasec.com?cc=cloud.sales@aquasec.com&Subject=GKE%20Marketplace%20Support%20Question%20Customer%20ID&Body=Dear%20Aqua%20support,)
 
 
     maintainers:
@@ -27,23 +27,19 @@ spec:
     - description: Getting Started with Aqua Security for GKE
       url: https://gcp-mktplace-docs.aquasec.com/     
     notes:  |-
-      The marketplace deployer has automatically deployed the Aqua Command center and Aqua Enforcers in audit mode, however three basic steps are necessary to complete deployment:
-      ``` 
-      Obtain the administrator password
-      Obtain the Aqua Command Center portal URL
-      Enter the license token
-      Back up the db secret, admin pass and enforcer tokens
-      ```
-      
-      ### Obtain the Aqua Command Center administrator password
-      The default username is `administrator`. Use `kubectl` to get the generated password out of the secret.
+      The marketplace deployer will automatically deploy the Aqua Command Center and accompanying Aqua Enforcers set to audit mode. This process takes approx. three minutes. The following four basic steps are necessary to complete deployment:
+    
+      ### 1. Backup Auto-Generated Secrets
+      By default the Aqua postgresql container utilizes a persistant volume (PVC). This PVC is not deleted along with your application in order to save your data.
+      In the case you re-deploy using the same application name and namespace, reloading these secrets will be necessary to access the db files on the reused PVC.
+      Please back them up now and see the getting started guide for more detail.
       ```shell
-      kubectl get secret {{ .Release.Name }}-admin-pass \
-      --namespace {{ .Release.Namespace }} \
-      --output=jsonpath='{.data.password}' | base64 --decode
+      kubectl get secrets -l secretType=aquaSecurity \
+      --namespace {{ .Release.Namespace }} -o json > aquaSecrets.json
       ```
 
-      ### Obtain the Aqua Command Center portal information:
+      ### 2. Obtain the Aqua Command Center portal information:
+      A user may run the following command or click on the Services tab and look for {{ .Release.Name }}-server-svc.
       ```shell
       SERVICE_IP=$(kubectl get svc {{ .Release.Name }}-server-svc \
       --namespace {{ .Release.Namespace }} \
@@ -51,21 +47,23 @@ spec:
       echo "http://${SERVICE_IP}:8080"
       ```
 
-      ### Enter the license to enable the product
+      ### 3. Obtain the Aqua Command Center administrator password
+      The default username is `administrator`. Use `kubectl` to extract the generated password from the secret.
+      ```shell
+      kubectl get secret {{ .Release.Name }}-admin-pass \
+      --namespace {{ .Release.Namespace }} \
+      --output=jsonpath='{.data.password}' | base64 --decode
+      ```
+
+      ### 4. Enter the license to enable the product
       Users that have a license token for GKE Marketplace should enter it to enable the PAYG billing of Enforcers. If you do not have a license token, you may request one by filling out the form [here.](https://www.aquasec.com/aqua-signup/?type=marketplace-gke)
 
       ### View logs of the Aqua Command Center
+      Should you need to access logs of the Aqua server pod, use the below command.
       ```shell
       SERVERPOD=$(kubectl get pods -l app={{ .Release.Name }}-server \
       --namespace {{ .Release.Namespace }} --no-headers -o=custom-columns=NAME:.metadata.name)
       kubectl logs -f ${SERVERPOD} --namespace={{ .Release.Namespace }}
-      ```
-      
-      ### Backup Auto-Generated Secrets
-      ```shell
-      kubectl get secrets -l secretType=aquaSecurity \
-      --namespace {{ .Release.Namespace }} -o json > aquaSecrets.json
-
       ```
      
   info:
@@ -124,7 +122,6 @@ kind: PersistentVolumeClaim
 metadata:
   name: "{{ .Release.Name }}-database-pvc"
 spec:
-  storageClassName: "{{ .Values.ssdStorageClass }}"
   accessModes:
     - ReadWriteOnce
   resources:

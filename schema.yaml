@@ -55,12 +55,7 @@ properties:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 16
-  ssdStorageClass:
-    type: string
-    x-google-marketplace:
-      type: STORAGE_CLASS
-      storageClass:
-        type: SSD  
+
 required:
 - adminPassword
 - enforcerToken
@@ -73,4 +68,3 @@ required:
 - name
 - namespace
 - server.reportingSecret
-- ssdStorageClass
