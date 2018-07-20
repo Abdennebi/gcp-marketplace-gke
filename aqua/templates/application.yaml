@@ -30,7 +30,7 @@ spec:
       The marketplace deployer will automatically deploy the Aqua Command Center and accompanying Aqua Enforcers set to audit mode. This process takes approx. three minutes. The following four basic steps are necessary to complete deployment:
     
       ### 1. Backup Auto-Generated Secrets
-      By default the Aqua postgresql container utilizes a persistant volume (PVC). This PVC is not deleted along with your application in order to save your data.
+      By default the Aqua postgresql container utilizes a persistant volume (PVC). When removing the application, this PVC is not deleted along with your application in order to save your data.
       In the case you re-deploy using the same application name and namespace, reloading these secrets will be necessary to access the db files on the reused PVC.
       Please back them up now and see the getting started guide for more detail.
       ```shell
