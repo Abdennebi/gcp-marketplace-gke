@@ -1,17 +1,10 @@
 # Aqua Container Security Platform (CSP) for GCP Marketplace
 
-<<<<<<< HEAD
 This github repo retains the helm charts and kubernets application manifest for Aqua Security's GCP Kubernetes Application Market offering. This readme includes reference documention regarding installation and upgrades while operating within Google Kubernetes Engine.
 
 Installation is simple, as Cloud Native apps should be! There is a minimal pre-requsite to attend to beyond having a GCP account: Aqua recommends running the Container Security Platform in a dedicated namespace. At the time of this writing creating a namespace in GKE requires kubectl. Fortunatly, it's also very easy using the cloud shell. First, authenticate to the cluster, then create a namespace as follows:
 
 ```shell
-=======
-This github repo retains the helm charts and kubernetes application manifest for Aqua Security's GCP Kubernetes Application Market offering. This readme includes reference documention regarding installation and upgrades while operating within Google Kubernetes Engine. 
-
-Installation is simple, as Cloud Native apps should be. Besides having a GCP account, there is one minimal pre-requsite to attend to - Aqua recommends running the Container Security Platform in a dedicated namespace. At the time of this writing creating a namespace via kubectl is required. Fortunatly, it's also very easy using the cloud shell. First, authenticate to the cluster, then create a namespace as follows:
-```
->>>>>>> d3df28e99dda46504164d081e8df103170ae08ff
 kubectl create namespace aqua-security
 ```
 
@@ -86,3 +79,4 @@ SERVERPOD=$(kubectl get pods -l app=appname-server \
 --namespace namespace --no-headers -o=custom-columns=NAME:.metadata.name)
 kubectl logs -f ${SERVERPOD} --namespace=nameSpace
 ```
+
