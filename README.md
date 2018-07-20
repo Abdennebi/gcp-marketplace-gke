@@ -1,8 +1,8 @@
 # Aqua Security for GCP Marketplace
 
-This github repo holds the helm charts and kubernets applications manifest for Aqua Security's GCP Kubernetes Application Market segment offering. This readme includes reference documention regarding installation and upgrades while operating within Google Kubernetes Engine. 
+This github repo retains the helm charts and kubernetes application manifest for Aqua Security's GCP Kubernetes Application Market offering. This readme includes reference documention regarding installation and upgrades while operating within Google Kubernetes Engine. 
 
-Installation is simple, as Cloud Native apps should be. There is a minimal pre-requsite to attend to - Aqua recommends running the Container Security Platform in a dedicated namespace. At the time of this writing creating a namespace via kubectl is required. Fortunatly, it's also very easy using the cloud shell. First, authenticate to the cluster, then create a namespace as follows:
+Installation is simple, as Cloud Native apps should be. Besides having a GCP account, there is one minimal pre-requsite to attend to - Aqua recommends running the Container Security Platform in a dedicated namespace. At the time of this writing creating a namespace via kubectl is required. Fortunatly, it's also very easy using the cloud shell. First, authenticate to the cluster, then create a namespace as follows:
 ```
 kubectl create namespace aqua-security
 ```
