@@ -1,0 +1,76 @@
+application_api_version: v1beta1
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  server.reportingSecret:
+    type: string
+    x-google-marketplace:
+      type: REPORTING_SECRET
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  server.image:
+    type: string
+    default: gcr.io/lexical-ellipse-195321/aqua-security:3.2
+    x-google-marketplace:
+      type: IMAGE
+  gateway.image:
+    type: string
+    default: gcr.io/lexical-ellipse-195321/aqua-security/gateway:3.2
+    x-google-marketplace:
+      type: IMAGE
+  database.image:
+    type: string
+    default: gcr.io/lexical-ellipse-195321/aqua-security/database:3.2
+    x-google-marketplace:
+      type: IMAGE
+  enforcer.image:
+    type: string
+    default: gcr.io/lexical-ellipse-195321/aqua-security/enforcer:3.2
+    x-google-marketplace:
+      type: IMAGE
+  scannerCli.image:
+    type: string
+    default: gcr.io/lexical-ellipse-195321/aqua-security/scanner-cli:3.2
+    x-google-marketplace:
+      type: IMAGE
+  dbPassword:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 16
+  enforcerToken:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 16
+  adminPassword:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 16
+  ssdStorageClass:
+    type: string
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD  
+required:
+- adminPassword
+- enforcerToken
+- dbPassword
+- enforcer.image
+- server.image
+- gateway.image
+- database.image
+- scannerCli.image
+- name
+- namespace
+- server.reportingSecret
+- ssdStorageClass

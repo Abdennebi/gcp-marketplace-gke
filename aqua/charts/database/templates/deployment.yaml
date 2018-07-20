@@ -1,0 +1,41 @@
+{{ if .Values.global.dbExternalServiceHost }}
+{{ else }}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    app: {{ template "fullname" . }}
+    component: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  template:
+    metadata:
+      labels:
+        app: {{ template "fullname" . }}
+      name: {{ template "fullname" . }}
+    spec:
+      containers:
+      - name: {{ template "fullname" . }}
+        image: "{{.Values.image}}"
+        imagePullPolicy: "{{.Values.global.imagePullPolicy}}"
+        env:
+          - name: PGDATA
+            value: "/var/lib/postgresql/data/db-files"
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-db-secret
+                key: password
+        volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: "{{ .Release.Name }}-database-vol"
+        ports:
+        - containerPort: {{.Values.database.containerPort}}
+      volumes:
+        - name: "{{ .Release.Name }}-database-vol"
+          persistentVolumeClaim:
+            claimName: "{{ .Release.Name }}-database-pvc"
+{{ end }}

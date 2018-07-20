@@ -1,0 +1,5 @@
+# server is the Aqua Server component
+# GCP requires one base image at root of GCR. Server will not be labled with server in GCR but places at the root of GCR and labeled as such: "aqua-security:3.2".
+server:
+  servicePort: 8080
+  containerPort: 8080

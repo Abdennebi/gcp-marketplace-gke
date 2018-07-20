@@ -1,0 +1,4 @@
+# Aqua Database component
+database:
+  servicePort: 5432
+  containerPort: 5432
